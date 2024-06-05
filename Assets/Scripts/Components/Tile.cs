@@ -16,5 +16,9 @@ namespace Components
             _coords = coords;
         }
 
+        private void OnMouseDown()
+        {
+            
+        }
     }
 }
