@@ -11,6 +11,7 @@ namespace Installers
         private InputEvents _inputEvents;
         private GridEvents _gridEvents;
 
+        // ReSharper disable Unity.PerformanceAnalysis
         public override void InstallBindings()
         {
             _projectEvents = new ProjectEvents();
@@ -23,32 +24,17 @@ namespace Installers
             Container.BindInstance(_gridEvents).AsSingle();
         }
 
-        private void Awake()
-        {
-            RegisterEvents();
-        }
+        private void Awake() => RegisterEvents();
 
-        public override void Start()
-        {
-            _projectEvents.ProjectStarted?.Invoke();
-        }
+        public override void Start() => _projectEvents.ProjectStarted?.Invoke();
 
-        private static void LoadScene(string sceneName)
-        {
-            SceneManager.LoadScene(sceneName);
-        }
+        private static void LoadScene(string sceneName) => SceneManager.LoadScene(sceneName);
 
-        private void RegisterEvents()
-        {
-            SceneManager.sceneLoaded += OnSceneLoaded;
-        }
+        private void RegisterEvents() => SceneManager.sceneLoaded += OnSceneLoaded;
 
-        private void OnSceneLoaded(Scene loadedScene, LoadSceneMode arg1)
+        private static void OnSceneLoaded(Scene loadedScene, LoadSceneMode arg1)
         {
-            if (loadedScene.name == EnvVar.LoginSceneName)
-            {
-                LoadScene(EnvVar.MainSceneName);
-            }
+            if (loadedScene.name == EnvVar.LoginSceneName) LoadScene(EnvVar.MainSceneName);
         }
     }
 }

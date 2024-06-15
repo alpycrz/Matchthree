@@ -17,8 +17,9 @@ namespace Components
         [Inject] private InputEvents InputEvents { get; set; }
         [Inject] private GridEvents GridEvents { get; set; }
 
-        [BoxGroup(Order = 999)] [TableMatrix(SquareCells = true, DrawElementMethod = nameof(DrawTile))] [OdinSerialize]
-        private Tile[,] _grid;
+        [BoxGroup(Order = 999)] 
+        [TableMatrix(SquareCells = true, DrawElementMethod = nameof(DrawTile))] 
+        [OdinSerialize] private Tile[,] _grid;
 
         [SerializeField] private List<GameObject> _tilePrefabs;
         [SerializeField] private int _gridSizeX;

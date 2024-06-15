@@ -12,9 +12,9 @@ namespace Components
         [Inject] private Camera Camera{get;set;}
         private RoutineHelper _inputRoutine;
 
-        private void Awake() {_inputRoutine = new RoutineHelper(this, null, InputUpdate);}
+        private void Awake() => _inputRoutine = new RoutineHelper(this, null, InputUpdate);
 
-        private void Start() {_inputRoutine.StartCoroutine();}
+        private void Start() => _inputRoutine.StartCoroutine();
 
         private void InputUpdate()
         {
