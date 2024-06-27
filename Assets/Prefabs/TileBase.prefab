@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7523355838028936159}
   - component: {fileID: 592390161579381587}
   - component: {fileID: -8000535818670037304}
-  - component: {fileID: 1955246419006139615}
+  - component: {fileID: -2678106629264050820}
   - component: {fileID: 8314448973519220787}
   m_Layer: 0
   m_Name: TileBase
@@ -103,7 +103,7 @@ MonoBehaviour:
   _id: 0
   _spriteRenderer: {fileID: 592390161579381587}
   _transform: {fileID: 7523355838028936159}
---- !u!65 &1955246419006139615
+--- !u!65 &-2678106629264050820
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,7 +122,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.2}
+  m_Size: {x: 2.56, y: 2.56, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &8314448973519220787
 Rigidbody:
