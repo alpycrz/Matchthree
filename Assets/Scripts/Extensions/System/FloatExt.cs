@@ -21,7 +21,7 @@ namespace Extensions.System
         {
             return Mathf.Sign(thisFloat);
         }
-
+        
         public static float Abs(this float thisFloat)
         {
             return Mathf.Abs(thisFloat);
