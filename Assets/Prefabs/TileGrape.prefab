@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5217355123594438613, guid: 5374ced143087d84c907916304c0b77c, type: 3}
+      propertyPath: _id
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5811667096486744654, guid: 5374ced143087d84c907916304c0b77c, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -58,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7149524400660833327, guid: 5374ced143087d84c907916304c0b77c, type: 3}
       propertyPath: m_Name
-      value: TilePearl
+      value: TileGrape
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

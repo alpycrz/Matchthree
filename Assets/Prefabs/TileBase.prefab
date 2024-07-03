@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _coords: {x: 0, y: 0}
-  _id: 0
+  _id: -1
   _spriteRenderer: {fileID: 592390161579381587}
   _transform: {fileID: 7523355838028936159}
 --- !u!65 &-2678106629264050820

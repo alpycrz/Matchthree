@@ -26,13 +26,13 @@ namespace Components
 
         private void OnDrawGizmos()
         {
-            if(_currMatchesDebug == null) return;
+            if(_lastMatches == null) return;
 
-            if(_currMatchesDebug.Count == 0) return;
+            if(_lastMatches.Count == 0) return;
             
             Gizmos.color = Color.blue;
             
-            foreach(Tile tile in _currMatchesDebug)
+            foreach(Tile tile in _lastMatches)
             {
                 if(! tile) continue;
 
@@ -84,13 +84,12 @@ namespace Components
                 int randomId = spawnableIds.Random();
                 
                 GameObject tilePrefabRandom = _tilePrefabs[randomId];
-                GameObject tileNew = PrefabUtility.InstantiatePrefab(tilePrefabRandom, transform) as GameObject; //Instantiate rand prefab
+                GameObject tileNew = PrefabUtility.InstantiatePrefab(tilePrefabRandom, transform) as GameObject;
                 tileNew.transform.position = pos;
                 
                 Tile tile = tileNew.GetComponent<Tile>();
                 tile.Construct(coord);
                 
-                // Becarefull while assigning tile to inversed y coordinates!
                 _grid[coord.x, coord.y] = tile;
             }
             
