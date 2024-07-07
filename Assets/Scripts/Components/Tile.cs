@@ -16,18 +16,19 @@ namespace Components
         [SerializeField] private Transform _transform;
         public MonoPool MyPool{get;set;}
         public ITweenContainer TweenContainer { get; set; }
+        public bool ToBeDestroyed { get; set; }
 
         private void Awake() => TweenContainer = TweenContain.Install(this);
         private void OnDisable() => TweenContainer.Clear();
         private void OnMouseDown() {}
         void ITileGrid.SetCoord(Vector2Int coord) => _coords = coord;
-
         void ITileGrid.SetCoord(int x, int y) => _coords = new Vector2Int(x, y);
         public void AfterCreate() {}
         public void BeforeDeSpawn() {}
         public void TweenDelayedDeSpawn(Func<bool> onComplete) {}
         public void AfterSpawn()
         {
+            ToBeDestroyed = false;
             //ADD RESET METHOD
             //(Resurrect)
         }
@@ -41,9 +42,18 @@ namespace Components
             return TweenContainer.AddedTween;
         }
 
-        public void DoHint(GridDir gridDir)
+        public Sequence DoHint(Vector3 worldPos, TweenCallback onComplete = null)
         {
-            //TODO: later
+            Vector3 lastPos = _transform.position;
+
+            TweenContainer.AddSequence = DOTween.Sequence();
+
+            TweenContainer.AddedSeq.Append(_transform.DOMove(worldPos, 1f));
+            TweenContainer.AddedSeq.Append(_transform.DOMove(lastPos, 1f));
+
+            TweenContainer.AddedSeq.onComplete += onComplete;
+
+            return TweenContainer.AddedSeq;
         }
     }
 

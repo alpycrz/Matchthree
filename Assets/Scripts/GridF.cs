@@ -122,9 +122,7 @@ public static class GridF
 
     public static List<Tile> GetMatchesY
     (this Tile[,] thisGrid, Tile tile)
-    {
-        return GetMatchesY(thisGrid, tile.Coords, tile.ID);
-    }
+        => GetMatchesY(thisGrid, tile.Coords, tile.ID);
 
     public static List<Tile> GetMatchesY(this Tile[,] grid, Vector2Int coord, int prefabId)
     {
@@ -169,10 +167,8 @@ public static class GridF
 
     public static List<Tile> GetMatchesX
     (this Tile[,] thisGrid, Tile tile)
-    {
-        return GetMatchesX(thisGrid, tile.Coords, tile.ID);
-    }
-
+        => GetMatchesX(thisGrid, tile.Coords, tile.ID);
+    
     public static List<Tile> GetMatchesX(this Tile[,] grid, Vector2Int coord, int prefabId)
     {
         Tile thisTile = grid.Get(coord);
