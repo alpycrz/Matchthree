@@ -1,4 +1,3 @@
-using System;
 using DG.Tweening;
 using Events;
 using Extensions.DoTween;
@@ -6,7 +5,7 @@ using Extensions.Unity.MonoHelper;
 using UnityEngine;
 using Zenject;
 
-namespace Components.UI
+namespace UI.Main
 {
     public class PlayerScoreTMP : UITMP, ITweenContainerBind
     {
@@ -27,8 +26,10 @@ namespace Components.UI
             _playerScore += arg0 * scoreMultiplier;
             
             if(_counterTween.IsActive()) _counterTween.Kill();
-            _counterTween = DOVirtual.Int(_currCounterVal, _playerScore, 1f, OnCounterUpdate);
+            _counterTween = DOVirtual.Int(_currCounterVal, _playerScore, 0.3f, OnCounterUpdate);
             TweenContainer.AddTween = _counterTween;
+            FindObjectOfType<SoundManager>().ScoreSound();
+
         }
 
         private void OnCounterUpdate(int val)

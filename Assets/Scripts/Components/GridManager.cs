@@ -8,6 +8,7 @@ using Extensions.System;
 using Extensions.Unity;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
+using UI.Main;
 using UnityEngine;
 using Zenject;
 
@@ -383,6 +384,7 @@ namespace Components
             }
             
             _destroyRoutine = StartCoroutine(DestroyRoutine());
+            FindObjectOfType<SoundManager>().MatchSound();
         }
         
         private IEnumerator DestroyRoutine()
