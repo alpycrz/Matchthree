@@ -15,6 +15,7 @@ namespace Components.UI
         public ITweenContainer TweenContainer { get; set; }
         private int _currCounterVal;
         private int _playerScore;
+        [SerializeField] private int scoreMultiplier = 10;
 
         private void Awake() => TweenContainer = TweenContain.Install(this);
 
@@ -23,7 +24,7 @@ namespace Components.UI
         private void OnMatchGroupDespawn(int arg0)
         {
             Debug.LogWarning($"{arg0}");
-            _playerScore += arg0;
+            _playerScore += arg0 * scoreMultiplier;
             
             if(_counterTween.IsActive()) _counterTween.Kill();
             _counterTween = DOVirtual.Int(_currCounterVal, _playerScore, 1f, OnCounterUpdate);
@@ -33,7 +34,7 @@ namespace Components.UI
         private void OnCounterUpdate(int val)
         {
             _currCounterVal = val;
-            _myTMP.text = $"Score: {_currCounterVal}";
+            _myTMP.text = $"{_currCounterVal}";
         }
         protected override void UnRegisterEvents() => GridEvents.MatchGroupDespawn -= OnMatchGroupDespawn;
 
