@@ -42,7 +42,6 @@ namespace Components
         [SerializeField] private GameObject _borderTop;
         [SerializeField] private GameObject _borderBot;
         [SerializeField] private Transform _borderTrans;
-        
         private Tile _selectedTile;
         private Vector3 _mouseDownPos;
         private Vector3 _mouseUpPos;
@@ -58,6 +57,8 @@ namespace Components
         private Sequence _hintTween;
         private Coroutine _destroyRoutine;
         public ITweenContainer TweenContainer{get;set;}
+        private Coroutine _hintRoutine;
+        [SerializeField]private int _scoreMulti;
 
         private void Awake()
         {
@@ -65,12 +66,19 @@ namespace Components
             
             for(int prefabId = 0; prefabId < _prefabIds.Count; prefabId ++)
             {
-                MonoPool tilePool = new 
-                    (new MonoPoolData(_tilePrefabs[prefabId], 10, _transform));
+                MonoPool tilePool = new
+                (
+                    new MonoPoolData
+                    (
+                        _tilePrefabs[prefabId],
+                        10,
+                        _transform
+                    )
+                );
                 
                 _tilePoolsByPrefabID.Add(tilePool);
             }
-
+            
             TweenContainer = TweenContain.Install(this);
         }
 
@@ -134,7 +142,7 @@ namespace Components
             {
                 List<Tile> matchesAll = _grid.GetMatchesXAll(tile);
                 matchesAll.AddRange(_grid.GetMatchesYAll(tile));
-
+                
                 if(matchesAll.Count > 0)
                 {
                     matches.Add(matchesAll);
@@ -146,18 +154,11 @@ namespace Components
             for(int i = 0; i < matches.Count; i ++)
             {
                 List<Tile> match = matches[i];
-                match = match.Where(e => e.ToBeDestroyed == false).ToList();
-
-                if(match.Count > 2)
-                {
-                    matches[i] = match;
-                    match.DoToAll(e => e.ToBeDestroyed = true);
-                }
-                else
-                {
-                    matches.Remove(match);
-                }
+                
+                matches[i] = match.Where(e => e.ToBeDestroyed == false).DoToAll(e => e.ToBeDestroyed = true).ToList();
             }
+            
+            matches = matches.Where(e => e.Count > 2).ToList();
 
             return matches.Count > 0;
         }
@@ -351,7 +352,9 @@ namespace Components
                 }
 
                 if(shouldWait)
+                {
                     yield return new WaitForSeconds(0.1f);
+                }
             }
 
             if(longestTween != null)
@@ -385,17 +388,20 @@ namespace Components
             
             _destroyRoutine = StartCoroutine(DestroyRoutine());
             FindObjectOfType<SoundManager>().MatchSound();
+
         }
         
         private IEnumerator DestroyRoutine()
         {
             foreach(List<Tile> matches in _lastMatches)
             {
-                int groupCount = matches.Count;
+                IncScoreMulti();
                 matches.DoToAll(DespawnTile);
                 
-                GridEvents.MatchGroupDespawn?.Invoke(groupCount);
+                //TODO: Show score multi text in ui as PunchScale
                 
+                GridEvents.MatchGroupDespawn?.Invoke(matches.Count * _scoreMulti);
+    
                 yield return new WaitForSeconds(0.1f);
             }
             
@@ -416,16 +422,57 @@ namespace Components
             toTile.DoMove(toTileWorldPos, onComplete);
         }
 
+        private void StartHintRoutine()
+        {
+            if(_hintRoutine != null)
+            {
+                StopCoroutine(_hintRoutine);
+            }
+
+            _hintRoutine = StartCoroutine(HintRoutineUpdate());
+        }
+        
+        private void StopHintRoutine()
+        {
+            if(_hintTile)
+            {
+                _hintTile.Teleport(_grid.CoordsToWorld(_transform, _hintTile.Coords));
+            }
+            
+            if(_hintRoutine != null)
+            {
+                StopCoroutine(_hintRoutine);
+                _hintRoutine = null;
+            }
+        }
+        
+        private IEnumerator HintRoutineUpdate()
+        {
+            while(true)
+            {
+                yield return new WaitForSeconds(3f);
+                TryShowHint();
+            }
+        }
         private void TryShowHint()
         {
             if(_hintTile)
             {
                 Vector2Int gridMoveDir = _hintDir.ToVector();
 
-                Vector3 moveCoords = _grid.CoordsToWorld(_transform, _hintTile.Coords + gridMoveDir);
+                Vector3 gridMoveEase = gridMoveDir.ToVector3XY() * 0.66f;
+
+                Vector3 moveCoords = _grid.CoordsToWorld(_transform, _hintTile.Coords + gridMoveDir) - gridMoveEase;
                 
                 _hintTween = _hintTile.DoHint(moveCoords);
             }
+        }
+
+        private void ResetScoreMulti() {_scoreMulti = 0;}
+
+        private void IncScoreMulti()
+        {
+            _scoreMulti ++;
         }
 
         private void RegisterEvents()
@@ -433,9 +480,16 @@ namespace Components
             InputEvents.MouseDownGrid += OnMouseDownGrid;
             InputEvents.MouseUpGrid += OnMouseUpGrid;
             GridEvents.InputStart += OnInputStart;
+            GridEvents.InputStop += OnInputStop;
         }
 
-        private void OnInputStart() => this.WaitFor(new WaitForSeconds(1f), TryShowHint);
+        private void OnInputStop() => StopHintRoutine();
+
+        private void OnInputStart()
+        {
+            StartHintRoutine();
+            ResetScoreMulti();
+        }
 
         private void OnMouseDownGrid(Tile clickedTile, Vector3 dirVector)
         {
@@ -499,6 +553,7 @@ namespace Components
             InputEvents.MouseDownGrid -= OnMouseDownGrid;
             InputEvents.MouseUpGrid -= OnMouseUpGrid;
             GridEvents.InputStart -= OnInputStart;
+            GridEvents.InputStop -= OnInputStop;
         }
     }
 }

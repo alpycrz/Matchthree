@@ -34,8 +34,12 @@ namespace Components
 
         public void TweenDelayedDeSpawn(Func<bool> onComplete) {}
 
-        public void AfterSpawn() => ToBeDestroyed = false;
-        //RESET METHOD (Resurrect)
+        public void AfterSpawn()
+        {
+            ToBeDestroyed = false;
+            //RESET METHOD (Resurrect)
+        }
+
         public void Teleport(Vector3 worldPos) => _transform.position = worldPos;
 
         public void Construct(Vector2Int coords) {_coords = coords;}
@@ -51,6 +55,8 @@ namespace Components
 
         public Sequence DoHint(Vector3 worldPos, TweenCallback onComplete = null)
         {
+            _spriteRenderer.sortingOrder = EnvVar.HintSpriteLayer;
+            
             Vector3 lastPos = _transform.position;
             
             TweenContainer.AddSequence = DOTween.Sequence();
@@ -59,7 +65,10 @@ namespace Components
             TweenContainer.AddedSeq.Append(_transform.DOMove(lastPos, 1f));
 
             TweenContainer.AddedSeq.onComplete += onComplete;
-
+            TweenContainer.AddedSeq.onComplete += delegate
+            {
+                _spriteRenderer.sortingOrder = EnvVar.TileSpriteLayer;
+            };
             return TweenContainer.AddedSeq;
         }
     }

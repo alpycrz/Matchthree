@@ -94,7 +94,7 @@ namespace Components
             for(int y = 0; y < _gridSizeY; y ++)
             {
                 List<int> spawnableIds = new(_prefabIds);
-                Vector2Int coord = new(x, _gridSizeY - y - 1);
+                Vector2Int coord = new(x, _gridSizeY - y - 1); //Invert Y Axis
                 Vector3 pos = new(coord.x, coord.y, 0f);
 
                 _grid.GetSpawnableColors(coord, spawnableIds);
@@ -108,7 +108,7 @@ namespace Components
                 Tile tile = tileNew.GetComponent<Tile>();
                 tile.Construct(coord);
                 
-                _grid[coord.x, coord.y] = tile;
+                _grid[coord.x, coord.y] = tile;// Becarefull while assigning tile to inversed y coordinates!
             }
             
             GenerateTileBG();
@@ -127,13 +127,13 @@ namespace Components
             {
                 Vector3 tileWorldPos = tile.transform.position;
 
-                GameObject tileBg = Instantiate
+                GameObject tileBg = PrefabUtility.InstantiatePrefab
                 (
                     _tileBGPrefab,
-                    tileWorldPos,
-                    Quaternion.identity,
                     _bGTrans
-                );
+                ) as GameObject;
+
+                tileBg.transform.position = tileWorldPos;
                 
                 _tileBGs.Add(tileBg);
             }
@@ -174,14 +174,14 @@ namespace Components
 
         private void InstantiateBorder(Vector3 tileWPos, GameObject borderPrefab)
         {
-            GameObject newBorder = Instantiate
+            GameObject newBorder = PrefabUtility.InstantiatePrefab
             (
                 borderPrefab,
-                tileWPos,
-                Quaternion.identity,
-                _borderTrans.transform
-            );
+                _borderTrans
+            ) as GameObject;
 
+            newBorder.transform.position = tileWPos;
+            
             _gridBorders.Add(newBorder);
         }
 #endif

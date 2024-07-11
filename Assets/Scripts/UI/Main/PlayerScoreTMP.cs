@@ -14,7 +14,6 @@ namespace UI.Main
         public ITweenContainer TweenContainer { get; set; }
         private int _currCounterVal;
         private int _playerScore;
-        [SerializeField] private int scoreMultiplier = 10;
 
         private void Awake() => TweenContainer = TweenContain.Install(this);
 
@@ -23,7 +22,7 @@ namespace UI.Main
         private void OnMatchGroupDespawn(int arg0)
         {
             Debug.LogWarning($"{arg0}");
-            _playerScore += arg0 * scoreMultiplier;
+            _playerScore += arg0;
             
             if(_counterTween.IsActive()) _counterTween.Kill();
             _counterTween = DOVirtual.Int(_currCounterVal, _playerScore, 0.3f, OnCounterUpdate);
