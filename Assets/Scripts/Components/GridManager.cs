@@ -398,7 +398,8 @@ namespace Components
                 IncScoreMulti();
                 matches.DoToAll(DespawnTile);
                 
-                //TODO: Show score multi text in ui as PunchScale
+                
+                //TODO: Show score multi text in ui as PunchScale and add VFX
                 
                 GridEvents.MatchGroupDespawn?.Invoke(matches.Count * _scoreMulti);
     
@@ -470,10 +471,7 @@ namespace Components
 
         private void ResetScoreMulti() {_scoreMulti = 0;}
 
-        private void IncScoreMulti()
-        {
-            _scoreMulti ++;
-        }
+        private void IncScoreMulti() => _scoreMulti ++;
 
         private void RegisterEvents()
         {
