@@ -1,5 +1,7 @@
 using Datas;
 using Events;
+using Settings;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
@@ -10,13 +12,27 @@ namespace Installers
         private ProjectEvents _projectEvents;
         private InputEvents _inputEvents;
         private GridEvents _gridEvents;
+        private ProjectSettings _projectSettings;
+        
         private MenuEvents _menuEvents;
         private MainUIEvents _mainUIEvents;
-        
         private static PlayerData _playerData;
         public static PlayerData PlayerData => _playerData;
 
         public override void InstallBindings()
+        {
+            InstallEvents();
+            InstallData();
+            InstallSettings();
+        }
+
+        private void InstallSettings()
+        {
+            _projectSettings = Resources.Load<ProjectSettings>(EnvVar.ProjectSettingsPath);
+            Container.BindInstance(_projectSettings).AsSingle();
+        }
+
+        private void InstallEvents()
         {
             _projectEvents = new ProjectEvents();
             Container.BindInstance(_projectEvents).AsSingle();
@@ -34,11 +50,7 @@ namespace Installers
             Container.BindInstance(_mainUIEvents).AsSingle();
         }
 
-        private void Awake()
-        {
-            RegisterEvents();
-            InstallData();
-        }
+        private void Awake() => RegisterEvents();
 
         private void InstallData() => _playerData = new PlayerData();
 

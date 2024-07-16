@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5504855310253064867}
   - component: {fileID: 4043927434966025193}
   m_Layer: 0
-  m_Name: Slot
+  m_Name: TileBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

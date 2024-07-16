@@ -2,6 +2,7 @@
 using Extensions.Unity;
 using Extensions.Unity.MonoHelper;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace Components
@@ -10,6 +11,7 @@ namespace Components
     {
         [Inject] private InputEvents InputEvents{get;set;}
         [Inject] private Camera Camera{get;set;}
+        [Inject] private Button Button { get; set; }
         [Inject] private GridEvents GridEvents{get;set;}
         private RoutineHelper _inputRoutine;
 
