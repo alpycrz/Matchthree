@@ -10,6 +10,7 @@ using Extensions.Unity;
 using Settings;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
+using TMPro;
 using UI.Main;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -36,6 +37,12 @@ namespace Components
         [SerializeField] private List<GameObject> _gridBorders = new();
         [SerializeField] private Transform _borderTrans;
         [SerializeField] private Transform _bGTrans;
+        [SerializeField] private int _scoreMulti;
+        [SerializeField] private TMP_Text _scoreMultiText;
+        [SerializeField] private GameObject _scoreMultiPanel;
+        [SerializeField] private Transform _scoreMultiTrans;
+        private Sequence _scoreMultiSeq;
+
 
         private Tile _selectedTile;
         private Vector3 _mouseDownPos;
@@ -52,7 +59,6 @@ namespace Components
         private Sequence _hintTween;
         private Coroutine _destroyRoutine;
         private Coroutine _hintRoutine;
-        [SerializeField]private int _scoreMulti;
         private Settings _mySettings;
         public ITweenContainer TweenContainer{get;set;}
 
@@ -142,10 +148,7 @@ namespace Components
                 List<Tile> matchesAll = _grid.GetMatchesXAll(tile);
                 matchesAll.AddRange(_grid.GetMatchesYAll(tile));
                 
-                if(matchesAll.Count > 0)
-                {
-                    matches.Add(matchesAll);
-                }
+                if(matchesAll.Count > 0) matches.Add(matchesAll);
             }
 
             matches = matches.OrderByDescending(e => e.Count).ToList();
@@ -398,8 +401,8 @@ namespace Components
                 IncScoreMulti();
                 matches.DoToAll(DespawnTile);
                 
-                
                 //TODO: Show score multi text in ui as PunchScale and add VFX
+                ScoreMultiplier();
                 
                 GridEvents.MatchGroupDespawn?.Invoke(matches.Count * _scoreMulti);
     
@@ -408,7 +411,35 @@ namespace Components
             
             SpawnAndAllocateTiles();
         }
+        private void IncScoreMulti() => _scoreMulti ++;
 
+        private void ResetScoreMulti() {_scoreMulti = 0;}
+
+        private void ScoreMultiplier()
+        {
+            if (_scoreMulti <= 1)
+            {
+                _scoreMultiPanel.SetActive(false);
+            }
+            else
+            {
+                _scoreMultiPanel.SetActive(true);
+                _scoreMultiText.text = "X" + _scoreMulti;
+                
+                
+                _scoreMultiTrans.localScale = Vector3.one;
+                _scoreMultiSeq = DOTween.Sequence();
+
+                Tween sizeIncTwn = _scoreMultiTrans.transform.DOScale(Vector3.one * 1.5f, 0.2f);
+                sizeIncTwn.SetEase(Ease.OutElastic);
+
+                Tween sizeDcrTwn = _scoreMultiTrans.transform.DOScale(Vector3.one * 1.1f, 0.2f);
+                sizeDcrTwn.SetEase(Ease.OutElastic);
+
+                _scoreMultiSeq.Append(sizeIncTwn);
+                _scoreMultiSeq.Append(sizeDcrTwn);
+            }
+        }
         private void DespawnTile(Tile e)
         {
             _grid.Set(null, e.Coords);
@@ -468,11 +499,7 @@ namespace Components
                 _hintTween = _hintTile.DoHint(moveCoords);
             }
         }
-
-        private void ResetScoreMulti() {_scoreMulti = 0;}
-
-        private void IncScoreMulti() => _scoreMulti ++;
-
+        
         private void RegisterEvents()
         {
             InputEvents.MouseDownGrid += OnMouseDownGrid;

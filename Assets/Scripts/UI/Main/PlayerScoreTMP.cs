@@ -15,7 +15,7 @@ namespace UI.Main
         private int _currCounterVal;
         private int _playerScore;
         
-        //TODO: player pref score registery
+        //TODO: player pref score register
 
         private void Awake() => TweenContainer = TweenContain.Install(this);
 
