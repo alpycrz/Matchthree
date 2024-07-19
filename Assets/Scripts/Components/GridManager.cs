@@ -13,7 +13,6 @@ using Sirenix.Serialization;
 using TMPro;
 using UI.Main;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace Components
@@ -400,10 +399,7 @@ namespace Components
             {
                 IncScoreMulti();
                 matches.DoToAll(DespawnTile);
-                
-                //TODO: Show score multi text in ui as PunchScale and add VFX
                 ScoreMultiplier();
-                
                 GridEvents.MatchGroupDespawn?.Invoke(matches.Count * _scoreMulti);
     
                 yield return new WaitForSeconds(0.1f);

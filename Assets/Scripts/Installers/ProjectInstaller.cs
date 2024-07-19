@@ -62,7 +62,7 @@ namespace Installers
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
             MenuEvents.StartGameBTN += OnStartGameBTN;
-            MainUIEvents.ExitBTN += OnExitBTN;
+            MainUIEvents.PauseBTN += OnExitBTN;
         }
 
         private void OnSceneLoaded(Scene loadedScene, LoadSceneMode arg1)

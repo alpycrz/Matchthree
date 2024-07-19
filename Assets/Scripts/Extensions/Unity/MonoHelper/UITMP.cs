@@ -10,8 +10,8 @@ namespace Extensions.Unity.MonoHelper
 {
     public abstract class UITMP : UIBase
     {
-        [ShowIf("@_manualReference == true")][SerializeField] 
-        protected TextMeshProUGUI _myTMP;
+        [ShowIf("@_manualReference == true")][SerializeField]
+        public TextMeshProUGUI _myTMP;
 
         [ShowIf("@_manualReference == true")][SerializeField]
         protected List<Image> _myOtherImages = new List<Image>();

@@ -11,7 +11,6 @@ namespace Components
     {
         [Inject] private InputEvents InputEvents{get;set;}
         [Inject] private Camera Camera{get;set;}
-        [Inject] private Button Button { get; set; }
         [Inject] private GridEvents GridEvents{get;set;}
         private RoutineHelper _inputRoutine;
 
@@ -54,6 +53,7 @@ namespace Components
         {
             GridEvents.InputStart -= OnInputStart;
             GridEvents.InputStop -= OnInputStop;
+
         }
     }
 }

@@ -1,3 +1,4 @@
+using Components;
 using DG.Tweening;
 using Events;
 using Extensions.DoTween;
@@ -13,10 +14,8 @@ namespace UI.Main
         private Tween _counterTween;
         public ITweenContainer TweenContainer { get; set; }
         private int _currCounterVal;
-        private int _playerScore;
+        private static int _playerScore;
         
-        //TODO: player pref score register
-
         private void Awake() => TweenContainer = TweenContain.Install(this);
 
         protected override void RegisterEvents() => GridEvents.MatchGroupDespawn += OnMatchGroupDespawn;
@@ -30,15 +29,18 @@ namespace UI.Main
             _counterTween = DOVirtual.Int(_currCounterVal, _playerScore, 0.3f, OnCounterUpdate);
             TweenContainer.AddTween = _counterTween;
             FindObjectOfType<SoundManager>().ScoreSound();
+            FindObjectOfType<GameManager>().AddMatchScore(1);
 
         }
 
-        private void OnCounterUpdate(int val)
+        public void OnCounterUpdate(int val)
         {
             _currCounterVal = val;
             _myTMP.text = $"{_currCounterVal}";
         }
-        protected override void UnRegisterEvents() => GridEvents.MatchGroupDespawn -= OnMatchGroupDespawn;
 
+        public static int GetCurrentScore() => _playerScore;
+        protected override void UnRegisterEvents() => GridEvents.MatchGroupDespawn -= OnMatchGroupDespawn;
+        
     }
 }
