@@ -1,10 +1,13 @@
 using UnityEngine;
 using Events;
+using Zenject;
 
 namespace Datas
 {
-    public class PlayerData
+    public class PlayerData : IInitializable
     {
+        [Inject] private MenuEvents MenuEvents { get; set; }
+        
         public float SoundVal => _soundVal;
         private const string SoundPrefKey = "Sound";
         private float _soundVal;
@@ -17,8 +20,6 @@ namespace Datas
         {
             _soundVal = PlayerPrefs.GetFloat(SoundPrefKey);
             _musicVal = PlayerPrefs.GetFloat(MusicPrefKey);
-            
-            RegisterEvents();
         }
 
         private void RegisterEvents()
@@ -37,6 +38,7 @@ namespace Datas
             _musicVal = musicVal;
             PlayerPrefs.SetFloat(MusicPrefKey, _musicVal);
         }
-        
+
+        public void Initialize() => RegisterEvents();
     }
 }

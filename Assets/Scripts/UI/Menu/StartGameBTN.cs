@@ -2,11 +2,14 @@ using DG.Tweening;
 using Events;
 using UI.Utils;
 using UnityEngine;
+using Zenject;
 
 namespace UI.Menu
 {
     public class StartGameBTN : UIBTN
     {
+        [Inject] private MenuEvents MenuEvents { get; set; }
+
         [SerializeField] private Transform _transform;
         private Sequence _clickSizeSeq;
 
@@ -30,17 +33,18 @@ namespace UI.Menu
             _clickSizeSeq.Append(sizeIncTwn);
             _clickSizeSeq.Append(sizeDcrTwn);
 
-            Tween secCounterTween = DOVirtual.Float
-            (
-                0, 1f, 0.03f, 
-                delegate(float e)
-                
-                { Debug.LogWarning($"{e} = e"); }
-            );
+             Tween secCounterTween = DOVirtual.Float
+             (
+                 0, 1f, 0.03f, 
+                 delegate(float e)
+                 
+                 { Debug.LogWarning($"{e} = e"); }
+             );
 
-            _clickSizeSeq.Append(secCounterTween);
+             _clickSizeSeq.Append(secCounterTween);
 
-            _clickSizeSeq.onComplete += delegate { MenuEvents.StartGameBTN?.Invoke();};
+            _clickSizeSeq.onComplete += delegate() { MenuEvents.StartGameBTN?.Invoke();};
         }
+
     }
 }

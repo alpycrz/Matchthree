@@ -1,11 +1,14 @@
 using Events;
 using UI.Utils;
 using UnityEngine;
+using Zenject;
 
 namespace UI.Menu
 {
     public class MainMenuManager : EventListenerMono
     {
+        [Inject] private MenuEvents MenuEvents { get; set; }
+
         [SerializeField] private GameObject _mainMenuPanel;
         [SerializeField] private GameObject _scoreboardPanel;
         [SerializeField] private GameObject _settingsMenuPanel;

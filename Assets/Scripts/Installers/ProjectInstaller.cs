@@ -1,3 +1,5 @@
+using System;
+using Components;
 using Datas;
 using Events;
 using Settings;
@@ -9,6 +11,7 @@ namespace Installers
 {
     public class ProjectInstaller : MonoInstaller<ProjectInstaller>
     {
+        private GameManager _gameManager;
         private ProjectEvents _projectEvents;
         private InputEvents _inputEvents;
         private GridEvents _gridEvents;
@@ -16,8 +19,7 @@ namespace Installers
         
         private MenuEvents _menuEvents;
         private MainUIEvents _mainUIEvents;
-        private static PlayerData _playerData;
-        public static PlayerData PlayerData => _playerData;
+        private  PlayerData _playerData;
 
         public override void InstallBindings()
         {
@@ -49,24 +51,31 @@ namespace Installers
             _mainUIEvents = new MainUIEvents();
             Container.BindInstance(_mainUIEvents).AsSingle();
         }
+        
+        private void InstallData()
+        {
+            _playerData = new PlayerData();
 
-        private void Awake() => RegisterEvents();
-
-        private void InstallData() => _playerData = new PlayerData();
+            Container.BindInstance(_playerData).AsSingle();
+        }
 
         public override void Start() => _projectEvents.ProjectStarted?.Invoke();
+
+        private void OnEnable() => RegisterEvents();
 
         private static void LoadScene(string sceneName) => SceneManager.LoadScene(sceneName);
 
         private void RegisterEvents()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
-            MenuEvents.StartGameBTN += OnStartGameBTN;
-            MainUIEvents.PauseBTN += OnExitBTN;
+            _menuEvents.StartGameBTN += OnStartGameBTN;
+            // _mainUIEvents.PauseBTN += OnPauseBTN;
+            // _mainUIEvents.ResumeBTN += OnResumeBTN;
         }
 
         private void OnSceneLoaded(Scene loadedScene, LoadSceneMode arg1)
         {
+            Time.timeScale = 1f;
             if(loadedScene.name == EnvVar.LoginSceneName)
             {
                 LoadScene(EnvVar.MainSceneName);
@@ -74,6 +83,7 @@ namespace Installers
         }
         private void OnStartGameBTN() => LoadScene("Main");
 
-        private void OnExitBTN() => LoadScene("Menu");
+        // private void OnPauseBTN() => _gameManager.PauseGame();
+        // private void OnResumeBTN() => _gameManager.ResumeGame();
     }
 }

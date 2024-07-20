@@ -1,15 +1,19 @@
+using Datas;
 using Events;
 using Installers;
 using UI.Utils;
+using Zenject;
 
 namespace UI.Menu.SettingsMenu
 {
     public class MusicSlider : UISlider
     {
-        protected override void OnEnable()
+        [Inject] private MenuEvents MenuEvents { get; set; }
+        [Inject] private PlayerData PlayerData { get; set; }
+
+        protected void Start()
         {
-            base.OnEnable();
-            _slider.value = ProjectInstaller.PlayerData.MusicVal;
+            _slider.value = PlayerData.MusicVal;
         }
 
         protected override void OnValueChanged(float val) => MenuEvents.MusicValueChanged?.Invoke(val);

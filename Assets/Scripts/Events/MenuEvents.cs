@@ -4,12 +4,12 @@ namespace Events
 {
     public class MenuEvents
     {
-        public static UnityAction SettingsBTN;
-        public static UnityAction SettingsExitBTN;
-        public static UnityAction ScoreboardBTN;
-        public static UnityAction ScoreboardExitBTN;
-        public static UnityAction StartGameBTN;
-        public static UnityAction<float> SoundValueChanged;
-        public static UnityAction<float> MusicValueChanged;
+        public UnityAction SettingsBTN;
+        public UnityAction SettingsExitBTN;
+        public UnityAction ScoreboardBTN;
+        public UnityAction ScoreboardExitBTN;
+        public UnityAction StartGameBTN;
+        public UnityAction<float> SoundValueChanged;
+        public UnityAction<float> MusicValueChanged;
     }
 }

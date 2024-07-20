@@ -4,6 +4,7 @@ namespace Events
 {
     public class MainUIEvents
     {
-        public static UnityAction PauseBTN;
+        public UnityAction PauseBTN;
+        public UnityAction ResumeBTN;
     }
 }

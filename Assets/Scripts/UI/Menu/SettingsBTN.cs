@@ -2,11 +2,14 @@ using DG.Tweening;
 using Events;
 using UI.Utils;
 using UnityEngine;
+using Zenject;
 
 namespace UI.Menu
 {
     public class SettingsBTN : UIBTN
     {
+        [Inject] private MenuEvents MenuEvents { get; set; }
+
         [SerializeField] private Transform _transform;
         private Sequence _clickSizeSeq;
 
