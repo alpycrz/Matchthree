@@ -1,4 +1,3 @@
-using System;
 using Components;
 using Datas;
 using Events;
@@ -16,10 +15,10 @@ namespace Installers
         private InputEvents _inputEvents;
         private GridEvents _gridEvents;
         private ProjectSettings _projectSettings;
-        
+
         private MenuEvents _menuEvents;
         private MainUIEvents _mainUIEvents;
-        private  PlayerData _playerData;
+        private PlayerData _playerData;
 
         public override void InstallBindings()
         {
@@ -38,7 +37,7 @@ namespace Installers
         {
             _projectEvents = new ProjectEvents();
             Container.BindInstance(_projectEvents).AsSingle();
-            
+
             _inputEvents = new InputEvents();
             Container.BindInstance(_inputEvents).AsSingle();
 
@@ -51,7 +50,7 @@ namespace Installers
             _mainUIEvents = new MainUIEvents();
             Container.BindInstance(_mainUIEvents).AsSingle();
         }
-        
+
         private void InstallData()
         {
             _playerData = new PlayerData();
@@ -69,21 +68,15 @@ namespace Installers
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
             _menuEvents.StartGameBTN += OnStartGameBTN;
-            // _mainUIEvents.PauseBTN += OnPauseBTN;
-            // _mainUIEvents.ResumeBTN += OnResumeBTN;
         }
 
         private void OnSceneLoaded(Scene loadedScene, LoadSceneMode arg1)
         {
             Time.timeScale = 1f;
-            if(loadedScene.name == EnvVar.LoginSceneName)
-            {
+            if (loadedScene.name == EnvVar.LoginSceneName)
                 LoadScene(EnvVar.MainSceneName);
-            }
         }
-        private void OnStartGameBTN() => LoadScene("Main");
 
-        // private void OnPauseBTN() => _gameManager.PauseGame();
-        // private void OnResumeBTN() => _gameManager.ResumeGame();
+        private void OnStartGameBTN() => LoadScene("Main");
     }
 }

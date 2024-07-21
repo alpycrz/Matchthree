@@ -29,5 +29,5 @@ MonoBehaviour:
     _borderTop: {fileID: 7699202112952654092, guid: c69a17a3c41a14021ac7a56ae921929e, type: 3}
     _borderBot: {fileID: 1641902472967636403, guid: b165c7e67660a4e2ab1b5191ba1c510e, type: 3}
   _gameManagerSettings:
-    _initTime: 10
+    _initTime: 20
     _timeMulti: 1.5

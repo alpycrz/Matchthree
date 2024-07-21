@@ -46,7 +46,7 @@ namespace Components
 
         public Tween DoMove(Vector3 worldPos, TweenCallback onComplete = null)
         {
-            TweenContainer.AddTween = _transform.DOMove(worldPos, 1f);
+            TweenContainer.AddTween = _transform.DOMove(worldPos, 0.3f);
 
             TweenContainer.AddedTween.onComplete += onComplete;
 

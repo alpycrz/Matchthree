@@ -16,7 +16,8 @@ namespace Components
         private void OnGridLoaded(Bounds gridBounds)
         {
             _transform.position = gridBounds.center + (Vector3.back * 10f);
-            _camera.orthographicSize = gridBounds.extents.x * (1f / _camera.aspect);
+            _camera.orthographicSize = gridBounds.extents.x * (1f / _camera.aspect); // Portrait Mode
+            //_camera.orthographicSize = gridBounds.extents.x * (_camera.aspect); // Landscape Mode
         }
 
         protected override void UnRegisterEvents() => GridEvents.GridLoaded -= OnGridLoaded;
